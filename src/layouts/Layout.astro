@@ -1,6 +1,8 @@
 ---
 import '../styles/global.css';
 import StickyCTA from '../components/StickyCTA.astro';
+import Cursor from '../components/Cursor.astro';
+
 
 
 interface Props {
@@ -27,6 +29,8 @@ const { title, description = "BIDA ISLA — Premium sustainable swimwear inspire
 	<body class="bg-bone text-primary antialiased">
 		<slot />
 		<StickyCTA />
+		<Cursor />
+
 
 		<script>
 			// Intersection Observer for reveal animations

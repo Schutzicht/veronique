@@ -1,0 +1,64 @@
+---
+---
+<div id="custom-cursor" class="hidden lg:block fixed top-0 left-0 w-8 h-8 pointer-events-none z-[9999] mix-blend-difference">
+  <div class="cursor-main absolute inset-0 bg-accent rounded-full opacity-50 blur-sm scale-100 transition-transform duration-300"></div>
+  <div class="cursor-dot absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1.5 h-1.5 bg-bone rounded-full"></div>
+</div>
+
+<style>
+  #custom-cursor {
+    will-change: transform;
+  }
+</style>
+
+<script>
+  function setupCursor() {
+    const cursor = document.getElementById('custom-cursor');
+    const main = cursor?.querySelector('.cursor-main');
+    
+    if (!cursor || !main) return;
+
+    let posX = 0, posY = 0;
+    let mouseX = 0, mouseY = 0;
+
+    // Use a slight lag for "liquid" feel
+    const lag = 0.15;
+
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
+
+    function animate() {
+      // Calculate eased position
+      posX += (mouseX - posX) * lag;
+      posY += (mouseY - posY) * lag;
+
+      // Apply transform
+      cursor.style.transform = `translate3d(${posX - 16}px, ${posY - 16}px, 0)`;
+
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+
+    // Interaction effects
+    const interactiveElements = document.querySelectorAll('a, button, input');
+    
+    interactiveElements.forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        main.style.transform = 'scale(2.5)';
+        main.classList.replace('bg-accent', 'bg-ocean');
+      });
+      el.addEventListener('mouseleave', () => {
+        main.style.transform = 'scale(1)';
+        main.classList.replace('bg-ocean', 'bg-accent');
+      });
+    });
+  }
+
+  // Initialize
+  setupCursor();
+  document.addEventListener('astro:page-load', setupNavigation); // Assuming setupNavigation also needs to run, but wait, I should re-init my cursor on page load too.
+  document.addEventListener('astro:page-load', setupCursor);
+</script>

@@ -1,13 +1,22 @@
 ---
 ---
-<div id="custom-cursor" class="hidden lg:block fixed top-0 left-0 w-8 h-8 pointer-events-none z-[9999] mix-blend-difference">
-  <div class="cursor-main absolute inset-0 bg-accent rounded-full opacity-50 blur-sm scale-100 transition-transform duration-300"></div>
-  <div class="cursor-dot absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1.5 h-1.5 bg-bone rounded-full"></div>
+<div id="custom-cursor" class="hidden lg:block fixed top-0 left-0 w-12 h-12 pointer-events-none z-[9999] mix-blend-difference">
+  <!-- Liquid Outer Ring -->
+  <div class="cursor-main absolute inset-0 border border-accent/30 rounded-full scale-100 transition-transform duration-500 ease-out"></div>
+  
+  <!-- Artistic Silhouette (Stylized Borst) -->
+  <div class="cursor-inner absolute inset-0 flex items-center justify-center opacity-80">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="text-accent">
+      <path d="M4 16C4 16 6 10 12 10C18 10 20 16 20 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+      <path d="M8 18C8 18 10 15 12 15C14 15 16 18 16 18" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity="0.5" />
+    </svg>
+  </div>
 </div>
 
 <style>
   #custom-cursor {
     will-change: transform;
+    transition: width 0.3s, height 0.3s;
   }
 </style>
 
@@ -15,14 +24,15 @@
   function setupCursor() {
     const cursor = document.getElementById('custom-cursor');
     const main = cursor?.querySelector('.cursor-main');
+    const inner = cursor?.querySelector('.cursor-inner');
     
-    if (!cursor || !main) return;
+    if (!cursor || !main || !inner) return;
 
     let posX = 0, posY = 0;
     let mouseX = 0, mouseY = 0;
 
-    // Use a slight lag for "liquid" feel
-    const lag = 0.15;
+    // Fluid lag
+    const lag = 0.12;
 
     document.addEventListener('mousemove', (e) => {
       mouseX = e.clientX;
@@ -30,35 +40,33 @@
     });
 
     function animate() {
-      // Calculate eased position
       posX += (mouseX - posX) * lag;
       posY += (mouseY - posY) * lag;
 
-      // Apply transform
-      cursor.style.transform = `translate3d(${posX - 16}px, ${posY - 16}px, 0)`;
-
+      cursor.style.transform = `translate3d(${posX - 24}px, ${posY - 24}px, 0)`;
       requestAnimationFrame(animate);
     }
 
     animate();
 
-    // Interaction effects
-    const interactiveElements = document.querySelectorAll('a, button, input');
+    // Hover interactions
+    const interactiveElements = document.querySelectorAll('a, button, input, .group');
     
     interactiveElements.forEach(el => {
       el.addEventListener('mouseenter', () => {
-        main.style.transform = 'scale(2.5)';
-        main.classList.replace('bg-accent', 'bg-ocean');
+        main.style.transform = 'scale(1.8)';
+        main.style.borderColor = 'rgba(44, 93, 99, 0.5)'; // ocean color
+        inner.style.transform = 'scale(1.2)';
       });
       el.addEventListener('mouseleave', () => {
         main.style.transform = 'scale(1)';
-        main.classList.replace('bg-ocean', 'bg-accent');
+        main.style.borderColor = 'rgba(212, 197, 179, 0.3)'; // accent color
+        inner.style.transform = 'scale(1)';
       });
     });
   }
 
-  // Initialize
+  // Initialize and support Astro View Transitions
   setupCursor();
-  document.addEventListener('astro:page-load', setupNavigation); // Assuming setupNavigation also needs to run, but wait, I should re-init my cursor on page load too.
   document.addEventListener('astro:page-load', setupCursor);
 </script>

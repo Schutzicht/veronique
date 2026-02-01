@@ -12,8 +12,8 @@
 
 @layer base {
     html {
-        scroll-behavior: smooth;
         background-color: var(--color-bone);
+
         color: var(--color-primary);
         font-family: var(--font-sans);
     }

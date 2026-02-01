@@ -1,20 +1,23 @@
 ---
 ---
-<div id="custom-cursor" class="hidden lg:block fixed top-0 left-0 w-16 h-16 pointer-events-none z-[9999] mix-blend-difference">
+<div id="custom-cursor" class="hidden lg:block fixed top-0 left-0 w-20 h-20 pointer-events-none z-[9999] mix-blend-difference">
   <!-- Liquid Outer Ring -->
   <div class="cursor-main absolute inset-0 border border-accent/20 rounded-full scale-100 transition-transform duration-500 ease-out"></div>
   
-  <!-- Stylized Breast Silhouette (Borst) -->
-  <div class="cursor-inner absolute inset-0 flex items-center justify-center opacity-70">
-    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" class="text-accent">
-      <!-- Main curve -->
-      <path d="M5 25C5 15 15 10 20 10C25 10 35 15 35 25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-      <!-- Nipple detail -->
-      <circle cx="20" cy="10" r="1.5" fill="currentColor" />
-      <!-- Subtle shadow detail -->
-      <path d="M12 28C12 28 15 24 20 24C25 24 28 28 28 28" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity="0.3" />
+  <!-- Explicit Breast Silhouette (Borst) -->
+  <div class="cursor-inner absolute inset-0 flex items-center justify-center opacity-80">
+    <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg" class="text-accent">
+      <!-- Main breast shape with realistic contour -->
+      <path d="M10 45C10 25 22 15 30 15C38 15 50 25 50 45" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
+      <!-- Areola and Nipple -->
+      <circle cx="30" cy="15" r="5" stroke="currentColor" stroke-width="1.5" opacity="0.4" />
+      <circle cx="30" cy="15" r="2.5" fill="currentColor" />
+      <!-- Stylized folds/shadows for depth -->
+      <path d="M24 45C24 45 27 40 30 40C33 40 36 45 36 45" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.3" />
+      <path d="M18 45C18 45 24 35 30 35C36 35 42 45 42 45" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity="0.1" />
     </svg>
   </div>
+
 </div>
 
 <style>
@@ -35,7 +38,7 @@
     let posX = 0, posY = 0;
     let mouseX = 0, mouseY = 0;
 
-    // Fluid lag for liquid feel
+    // Fluid lag
     const lag = 0.1;
 
     document.addEventListener('mousemove', (e) => {
@@ -47,7 +50,9 @@
       posX += (mouseX - posX) * lag;
       posY += (mouseY - posY) * lag;
 
-      cursor.style.transform = `translate3d(${posX - 32}px, ${posY - 32}px, 0)`;
+      // Adjust for larger cursor size (half of 20px is 10px, but it's 20rem? no, w-20 is 5rem=80px)
+      // w-20 = 80px. half is 40px.
+      cursor.style.transform = `translate3d(${posX - 40}px, ${posY - 40}px, 0)`;
       requestAnimationFrame(animate);
     }
 
@@ -58,21 +63,20 @@
     
     interactiveElements.forEach(el => {
       el.addEventListener('mouseenter', () => {
-        main.style.transform = 'scale(1.5)';
-        main.style.borderColor = 'rgba(44, 93, 99, 0.4)'; // ocean color
-        inner.style.transform = 'scale(1.1) translateY(-2px)';
+        main.style.transform = 'scale(1.4)';
+        main.style.borderColor = 'rgba(44, 93, 99, 0.5)';
+        inner.style.transform = 'scale(1.2) translateY(-5px)';
         inner.style.opacity = '1';
       });
       el.addEventListener('mouseleave', () => {
         main.style.transform = 'scale(1)';
-        main.style.borderColor = 'rgba(212, 197, 179, 0.2)'; // accent color
+        main.style.borderColor = 'rgba(212, 197, 179, 0.2)';
         inner.style.transform = 'scale(1) translateY(0)';
         inner.style.opacity = '0.7';
       });
     });
   }
 
-  // Initialize and support Astro View Transitions
   setupCursor();
   document.addEventListener('astro:page-load', setupCursor);
 </script>

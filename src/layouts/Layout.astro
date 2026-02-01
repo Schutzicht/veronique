@@ -69,12 +69,19 @@ const { title, description = "BIDA ISLA — Premium sustainable swimwear inspire
 
       const setupReveal = () => {
         const revealElements = document.querySelectorAll('.reveal');
+        console.log(`Setting up reveal for ${revealElements.length} elements`);
         revealElements.forEach(el => observer.observe(el));
       };
 
+      // Handle initial load and view transitions
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', setupReveal);
+      } else {
+        setupReveal();
+      }
       document.addEventListener('astro:page-load', setupReveal);
-      setupReveal();
 		</script>
 	</body>
 </html>
+
 

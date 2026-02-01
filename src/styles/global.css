@@ -50,10 +50,17 @@
     }
 }
 
+/* Safer Reveal Logic */
 .reveal {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1), transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Only hide if the browser likely supports IO and we want the effect */
+@media (prefers-reduced-motion: no-preference) {
+    .reveal:not(.visible) {
+        opacity: 0;
+        transform: translateY(30px);
+    }
 }
 
 .reveal.visible {

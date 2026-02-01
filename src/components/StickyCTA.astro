@@ -1,0 +1,36 @@
+---
+---
+<a 
+  href="#join" 
+  id="sticky-cta" 
+  class="fixed bottom-8 right-8 z-50 px-10 py-5 bg-accent text-primary text-xs uppercase tracking-[0.3em] font-semibold shadow-[0_20px_50px_rgba(44,93,99,0.3)] transition-all duration-700 translate-y-32 opacity-0 hover:scale-105 hover:bg-ocean hover:text-bone flex items-center gap-3 backdrop-blur-sm"
+>
+  <span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse group-hover:bg-bone"></span>
+  Join the waitlist
+</a>
+
+<script>
+  const stickyCta = document.getElementById('sticky-cta');
+  const joinSection = document.getElementById('join');
+
+  const updateVisibility = () => {
+    if (!stickyCta || !joinSection) return;
+
+    const scrollY = window.scrollY;
+    const joinRect = joinSection.getBoundingClientRect();
+    const isJoinSectionVisible = joinRect.top < window.innerHeight && joinRect.bottom > 0;
+
+    if (scrollY > 600 && !isJoinSectionVisible) {
+      stickyCta.classList.remove('translate-y-32', 'opacity-0');
+      stickyCta.classList.add('translate-y-0', 'opacity-100');
+    } else {
+      stickyCta.classList.add('translate-y-32', 'opacity-0');
+      stickyCta.classList.remove('translate-y-0', 'opacity-100');
+    }
+  };
+
+  window.addEventListener('scroll', updateVisibility);
+  // Initial check
+  updateVisibility();
+</script>
+

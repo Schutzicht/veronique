@@ -70,7 +70,12 @@ const { title, description = "BIDA ISLA — Premium sustainable swimwear inspire
       const setupReveal = () => {
         const revealElements = document.querySelectorAll('.reveal');
         console.log(`Setting up reveal for ${revealElements.length} elements`);
-        revealElements.forEach(el => observer.observe(el));
+        
+        revealElements.forEach(el => {
+          // Add reveal-init ONLY if JS is running, making them hidden initially for the animation
+          el.classList.add('reveal-init');
+          observer.observe(el);
+        });
       };
 
       // Handle initial load and view transitions
@@ -83,5 +88,6 @@ const { title, description = "BIDA ISLA — Premium sustainable swimwear inspire
 		</script>
 	</body>
 </html>
+
 
 

@@ -1,14 +1,18 @@
 ---
 ---
-<div id="custom-cursor" class="hidden lg:block fixed top-0 left-0 w-12 h-12 pointer-events-none z-[9999] mix-blend-difference">
+<div id="custom-cursor" class="hidden lg:block fixed top-0 left-0 w-16 h-16 pointer-events-none z-[9999] mix-blend-difference">
   <!-- Liquid Outer Ring -->
-  <div class="cursor-main absolute inset-0 border border-accent/30 rounded-full scale-100 transition-transform duration-500 ease-out"></div>
+  <div class="cursor-main absolute inset-0 border border-accent/20 rounded-full scale-100 transition-transform duration-500 ease-out"></div>
   
-  <!-- Artistic Silhouette (Stylized Borst) -->
-  <div class="cursor-inner absolute inset-0 flex items-center justify-center opacity-80">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="text-accent">
-      <path d="M4 16C4 16 6 10 12 10C18 10 20 16 20 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-      <path d="M8 18C8 18 10 15 12 15C14 15 16 18 16 18" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity="0.5" />
+  <!-- Stylized Breast Silhouette (Borst) -->
+  <div class="cursor-inner absolute inset-0 flex items-center justify-center opacity-70">
+    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" class="text-accent">
+      <!-- Main curve -->
+      <path d="M5 25C5 15 15 10 20 10C25 10 35 15 35 25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+      <!-- Nipple detail -->
+      <circle cx="20" cy="10" r="1.5" fill="currentColor" />
+      <!-- Subtle shadow detail -->
+      <path d="M12 28C12 28 15 24 20 24C25 24 28 28 28 28" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity="0.3" />
     </svg>
   </div>
 </div>
@@ -31,8 +35,8 @@
     let posX = 0, posY = 0;
     let mouseX = 0, mouseY = 0;
 
-    // Fluid lag
-    const lag = 0.12;
+    // Fluid lag for liquid feel
+    const lag = 0.1;
 
     document.addEventListener('mousemove', (e) => {
       mouseX = e.clientX;
@@ -43,7 +47,7 @@
       posX += (mouseX - posX) * lag;
       posY += (mouseY - posY) * lag;
 
-      cursor.style.transform = `translate3d(${posX - 24}px, ${posY - 24}px, 0)`;
+      cursor.style.transform = `translate3d(${posX - 32}px, ${posY - 32}px, 0)`;
       requestAnimationFrame(animate);
     }
 
@@ -54,14 +58,16 @@
     
     interactiveElements.forEach(el => {
       el.addEventListener('mouseenter', () => {
-        main.style.transform = 'scale(1.8)';
-        main.style.borderColor = 'rgba(44, 93, 99, 0.5)'; // ocean color
-        inner.style.transform = 'scale(1.2)';
+        main.style.transform = 'scale(1.5)';
+        main.style.borderColor = 'rgba(44, 93, 99, 0.4)'; // ocean color
+        inner.style.transform = 'scale(1.1) translateY(-2px)';
+        inner.style.opacity = '1';
       });
       el.addEventListener('mouseleave', () => {
         main.style.transform = 'scale(1)';
-        main.style.borderColor = 'rgba(212, 197, 179, 0.3)'; // accent color
-        inner.style.transform = 'scale(1)';
+        main.style.borderColor = 'rgba(212, 197, 179, 0.2)'; // accent color
+        inner.style.transform = 'scale(1) translateY(0)';
+        inner.style.opacity = '0.7';
       });
     });
   }
